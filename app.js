@@ -1,33 +1,24 @@
 // Let's make a Cat constructor!
-let Cat = (function () {
+let Cat = (() => {
   let cats = [];
+
   let constructor = function (name, weight) {
-    if (typeof name == "undefined" || typeof weight == "undefined") {
-      throw Error("Must specify a name and a weight");
-    }
+    if (!name || !weight) throw Error("Must be 2 args name and weight");
+
     Object.defineProperty(this, "name", {
-      get: function () {
-        return name;
-      },
+      get: () => name,
     });
+
     Object.defineProperty(this, "weight", {
-      get: function () {
-        return weight;
-      },
-      set: function (x) {
-        weight = x;
-        return weight;
-      },
+      get: () => weight,
+      set: (x) => (weight = x),
     });
     cats.push(this);
   };
-  constructor.averageWeight = function () {
-    return (
-      cats.reduce(function (sum, cat) {
-        return sum + cat.weight;
-      }, 0) / cats.length
-    );
-  };
+
+  constructor.averageWeight = () =>
+    cats.reduce((sum, cat) => sum + cat.weight, 0) / cats.length;
+
   return constructor;
 })();
 
@@ -86,7 +77,7 @@ console.log(
 );
 
 felix = new Cat("felix", 15);
-Cat.averageWeight();
+Cat.averageWeight(); // now 20
 console.log(
   "%c ㊗️: //Cat.averageWeight -> Cat.averageWeight(); ",
   "font-size:16px;background-color:#014306;color:white;",
